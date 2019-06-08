@@ -5,13 +5,24 @@
 #include "sphere.h"
 #include "camera.h"
 #include <float.h>
+#define srand48(x) srand((int)(x))
+#define drand48() ((double)rand()/RAND_MAX)
 
+
+vec3 random_in_unit_sphere(){
+    vec3 p;
+    do {
+        p = 2.0*vec3(drand48(), drand48(), drand48()) - vec3(1,1,1);
+    } while(p.squared_length() >=1.0);
+    return p;
+}
 
 vec3 color(const ray& r, hitable *world)
 {
     hit_record rec;
     if(world->hit(r, 0.0, FLT_MAX, rec)){
-        return 0.5*vec3(rec.normal.x()+1, rec.normal.y()+1, rec.normal.z()+1);
+        vec3 target = rec.p + rec.normal + random_in_unit_sphere();
+        return 0.5*color(ray(rec.p, target-rec.p), world);
     }
     else{
         vec3 unit_direction = unit_vector(r.direction());
@@ -27,7 +38,7 @@ int main()
     int ns =100;
 
     std::ofstream outfile;
-	outfile.open("..\\data\\camera_class_circle.ppm");
+	outfile.open("..\\data\\diffuse_materials.ppm");
 
     //Output to .ppm file
     outfile << "P3\n" << nx << " " << ny << "\n255\n";
@@ -44,8 +55,8 @@ int main()
             vec3 col(0, 0, 0);
             for(int s=0; s  < ns; s++)
             {
-                float u = float(i+(rand() / (RAND_MAX + 1.0)))/float(nx);
-                float v = float(j+(rand() / (RAND_MAX + 1.0)))/float(ny);
+                float u = float(i+drand48())/float(nx);
+                float v = float(j+drand48())/float(ny);
                 ray r = cam.get_ray(u, v);
                 vec3 p = r.point_at_parameter(2.0);
                 col += color(r, world);
