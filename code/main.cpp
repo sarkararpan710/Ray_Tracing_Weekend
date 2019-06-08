@@ -7,8 +7,6 @@
 #include <float.h>
 
 
-double rand_num = (rand() / (RAND_MAX + 1.0));
-
 vec3 color(const ray& r, hitable *world)
 {
     hit_record rec;
@@ -44,10 +42,10 @@ int main()
         for(int i=0; i<nx; i++)
         {
             vec3 col(0, 0, 0);
-            for(int s=0; s < ns; s++)
+            for(int s=0; s  < ns; s++)
             {
-                float u = float(i+rand_num)/float(nx);
-                float v = float(j+rand_num)/float(ny);
+                float u = float(i+(rand() / (RAND_MAX + 1.0)))/float(nx);
+                float v = float(j+(rand() / (RAND_MAX + 1.0)))/float(ny);
                 ray r = cam.get_ray(u, v);
                 vec3 p = r.point_at_parameter(2.0);
                 col += color(r, world);
