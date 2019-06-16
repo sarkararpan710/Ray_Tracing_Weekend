@@ -1,6 +1,17 @@
 #include<math.h>
 #include<stdlib.h>
 #include<iostream>
+#include<stdint.h>
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
+
+typedef int8_t s8;
+typedef int16_t s16;
+typedef int32_t s32;
+typedef int64_t s64;
+typedef float f32;
 
 //previous definition of vec3.h contained some erroneous overloaded functions that resulted in only a blue image
 //const floats on multiple / operators was the cause 
@@ -140,4 +151,21 @@ inline vec3& vec3::operator/=(const float t) {
 
 inline vec3 unit_vector(vec3 v) {
 	return v / v.length();
+}
+
+u32 RoundReal32ToUInt32(f32 F)
+{
+	u32 Result = (u32)(F + 0.5f);
+	return Result;
+}
+
+//No packing for the alpha channel now since we are writing the bitmap file with only RGBA
+u32
+BGRPack4x8(vec3 Unpacked)
+{
+	u32 Result = ((RoundReal32ToUInt32(Unpacked.r()) << 16) |
+		(RoundReal32ToUInt32(Unpacked.g()) << 8) |
+		(RoundReal32ToUInt32(Unpacked.b()) << 0));
+
+	return(Result);
 }
