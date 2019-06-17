@@ -125,14 +125,15 @@ vec3 color(const ray& r, hitable *world, int depth)
 
 int main()
 {    
+    printf("Raycasting......");
     /*
     int nx=1280;
     int ny =720;
     */
-    u32 ns = 10000;
+    u32 ns = 100;
     
     
-    image_32 Image = AllocateImage(1920, 1080);
+    image_32 Image = AllocateImage(800, 600);
 
     //std::ofstream outfile;
     //outfile.open("..\\data\\stb_test.txt");  
@@ -151,7 +152,7 @@ int main()
     list[0] = new sphere(vec3(0,0,-1), 0.5, new lambertian(vec3(0.8, 0.3, 0.3)));
     list[1] = new sphere(vec3(0,-100.5,-1), 100, new lambertian(vec3(0.8, 0.8, 0.0)));
     list[2] = new sphere(vec3(1,0,-1), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.3));
-    list[3] = new sphere(vec3(-1,0,-1), 0.5, new metal(vec3(0.8, 0.8, 0.8), 1.0));
+    list[3] = new sphere(vec3(-1,0,-1), 0.5, new dielectric(1.5));
     hitable *world = new hitable_list(list,4);
     camera cam;
     u32 *Out = Image.Pixels;
@@ -186,8 +187,15 @@ int main()
             //outfile << ir << " " << ig << " " << ib << "\n";
             //stbi_write_png("\\data\\stb_test.png", ir, ig, ib , data, 8);
         }
+
+        if((y%64) ==0)
+		{
+			printf("\rRaycasting row %d%%....",100*y / Image.Height);
+			fflush(stdout);
+		}
     }
-    WriteImage(Image, "..\\data\\MoreSamplingBMPtestHD.bmp");//getting the raytraced image plane on test.bmp.
+    WriteImage(Image, "..\\data\\Dielectric_Refraction.bmp");//getting the raytraced image plane on test.bmp.
+    printf("\nDone.....\n");
     //outfile.close();
 
     
