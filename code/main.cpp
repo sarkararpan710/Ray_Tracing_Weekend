@@ -133,7 +133,7 @@ int main()
     u32 ns = 100;
     
     
-    image_32 Image = AllocateImage(800, 600);
+    image_32 Image = AllocateImage(1920, 1080);
 
     //std::ofstream outfile;
     //outfile.open("..\\data\\stb_test.txt");  
@@ -148,11 +148,12 @@ int main()
     //outfile << nx << " " << ny << "\n255\n";
     //std::out<<"P3\n" <<nx <<" " <<ny<<"\n255\n";
 
-    hitable *list[4];
+    hitable *list[5];
     list[0] = new sphere(vec3(0,0,-1), 0.5, new lambertian(vec3(0.8, 0.3, 0.3)));
     list[1] = new sphere(vec3(0,-100.5,-1), 100, new lambertian(vec3(0.8, 0.8, 0.0)));
     list[2] = new sphere(vec3(1,0,-1), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.3));
     list[3] = new sphere(vec3(-1,0,-1), 0.5, new dielectric(1.5));
+    list[4] = new sphere(vec3(-1,0,-1), -0.45, new dielectric(1.5));
     hitable *world = new hitable_list(list,4);
     camera cam;
     u32 *Out = Image.Pixels;
@@ -194,7 +195,7 @@ int main()
 			fflush(stdout);
 		}
     }
-    WriteImage(Image, "..\\data\\Dielectric_Refraction.bmp");//getting the raytraced image plane on test.bmp.
+    WriteImage(Image, "..\\data\\Hollow_Glass_Sphere.bmp");//getting the raytraced image plane on test.bmp.
     printf("\nDone.....\n");
     //outfile.close();
 
