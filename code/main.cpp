@@ -133,12 +133,12 @@ int main()
 {    
     printf("Raycasting......");
     /*
-    int nx=1280;
-    int ny =720;
+    int nx=1920;
+    int ny =72;
     */
-    u32 ns = 10;
-    u32 width = 1280;
-    u32 height = 720;
+    u32 ns = 100;
+    u32 width = 1920;
+    u32 height = 1080;
     
     
     //image_32 Image = AllocateImage(width, height);
@@ -165,11 +165,11 @@ int main()
     hitable *world = new hitable_list(list,4);
     camera cam;
     //u32 *Out = Image.Pixels;
-    u8* pixels = new u8[width * height * CHANNEL_NUM];
+    u8* pixels = new u8[width * (-height) * CHANNEL_NUM];
 
     u32 index =0;
-    for(u32 y=0 ; y<height; y++)
-    {
+    for(u32 y=height-1 ; y>0; y--)
+     {
         for(u32 x=0; x<width; x++)
         {
             vec3 col(0, 0, 0);
@@ -197,9 +197,9 @@ int main()
             int ig = int(255.99*col[1]);
             int ib = int(255.99*col[2]);
 
-            pixels[++index] = ir;
-            pixels[++index] = ig;
-            pixels[++index] = ib;
+            pixels[index++] = ir;
+            pixels[index++] = ig;
+            pixels[index++] = ib;
             
             //std::cout<<ir<<" "<<ig<<" "<<ib<<"\n";
             //data = (unsigned char*)ir + (unsigned char)" " + ig + (unsigned char)" " + ib + (unsigned char)"\n";
@@ -214,7 +214,7 @@ int main()
 		}
     }
 
-    stbi_write_png("testpng_2.png", width, height, CHANNEL_NUM, pixels, width*CHANNEL_NUM);
+    stbi_write_png("pngtest_final.png", width, height, CHANNEL_NUM, pixels, width*CHANNEL_NUM);
 
     /*
     Skipping out on the bmp write as we are testing the png writes now
