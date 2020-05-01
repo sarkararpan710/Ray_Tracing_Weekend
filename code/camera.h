@@ -28,8 +28,8 @@ camera initiate(vec3 lower_left_corner, vec3 horizontal, vec3 vertical, vec3 ori
 ray get_ray(float u, float v, vec3& llc, vec3& horizontal, vec3& vertical, vec3& origin)
 {
     camera cam = initiate(llc, horizontal, vertical, origin);
-    ray *r = (ray*)malloc(sizeof(ray));
-    return (r->set_ray(cam.origin, (cam.lower_left_corner + (u*cam.horizontal) + (v*cam.vertical - cam.origin))));
+    ray r;
+    return (r.set_ray(cam.origin, (cam.lower_left_corner + (u*cam.horizontal) + (v*cam.vertical - cam.origin))));
     
 };
 /*

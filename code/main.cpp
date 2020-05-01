@@ -225,7 +225,7 @@ int main()
 		}
     }
 
-    stbi_write_png("Cstyle_raytest.png", width, height, CHANNEL_NUM, pixels, width*CHANNEL_NUM);
+    stbi_write_png("Cstyle_raytest_v1.png", width, height, CHANNEL_NUM, pixels, width*CHANNEL_NUM);
 
     /*
     Skipping out on the bmp write as we are testing the png writes now
