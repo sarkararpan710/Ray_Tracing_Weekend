@@ -136,9 +136,14 @@ int main()
     int nx=1920;
     int ny =72;
     */
-    u32 ns = 100;
-    u32 width = 1920;
-    u32 height = 1080;
+    u32 ns = 10;
+    u32 width = 800;
+    u32 height = 600;
+
+    vec3 horizontal;
+    vec3 vertical;
+    vec3 lower_left_corner;
+    vec3 origin;
     
     
     //image_32 Image = AllocateImage(width, height);
@@ -163,7 +168,11 @@ int main()
     list[3] = new sphere(vec3(-1,0,-1), 0.5, new dielectric(1.5));
     list[4] = new sphere(vec3(-1,0,-1), -0.45, new dielectric(1.5));
     hitable *world = new hitable_list(list,4);
-    camera cam;
+
+    //allocate and instantiate the camera
+    camera cam = initiate(lower_left_corner, horizontal, vertical, origin);
+
+    //camera cam;
     //u32 *Out = Image.Pixels;
     u8* pixels = new u8[width * (-height) * CHANNEL_NUM];
 
@@ -178,7 +187,9 @@ int main()
             {
                 float u = float(x+drand48())/float(width);
                 float v = float(y+drand48())/float(height);
-                ray r = cam.get_ray(u, v);
+                //we pass the camera parameters as well as u and v to retrieve and instantiate the 
+                //ray object from this function.
+                ray r = get_ray(u, v, cam.lower_left_corner, cam.vertical, cam.horizontal, cam.origin);
                 vec3 p = r.point_at_parameter(2.0);
                 col = col + color(r, world, 0); //col returns a vec3
             }
@@ -214,7 +225,7 @@ int main()
 		}
     }
 
-    stbi_write_png("pngtest_final.png", width, height, CHANNEL_NUM, pixels, width*CHANNEL_NUM);
+    stbi_write_png("Cstyle_raytest.png", width, height, CHANNEL_NUM, pixels, width*CHANNEL_NUM);
 
     /*
     Skipping out on the bmp write as we are testing the png writes now
